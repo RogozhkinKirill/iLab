@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "StackFunctions.h"
 
+#include "StackFunctions.h"
+#include "errors.h"
 
 
 int* MyRealloc(int *pArr , int OldLen , int NewLen)
@@ -38,16 +39,16 @@ int preOK(pStack stk)
 {
 	if(!stk)
 	{
-		return 1;
+		return _NULL_POINTER_;
 	}
 
 	if(stk->number <= stk->lenth)
 	{
-		return 1;
+		return _STACK_OVERFLOW_;
 	}
 	else
 	{
-		return 0;
+		return _OK_;
 	}
 }
 
@@ -55,11 +56,11 @@ int postOK(pStack stk)
 {
 	if(stk->number <= stk->lenth)
 	{
-		return 1;
+		return _STACK_OVERFLOW_;
 	}
 	else
 	{
-		return 0;
+		return _OK_;
 	}
 }
 
@@ -79,6 +80,8 @@ void MyDestroy(tpStack stk)
 {
 	free((**stk).data);
 	printf("\n%p\n" , *stk);
+
+	return;
 }
 
 
@@ -110,7 +113,9 @@ void MyPush(pStack stk , int value)
 
 int MyPop(pStack stk)
 {
-	assert(stk);
+	if(!stk)
+		return _NULL_POINTER_;
+
 	assert(stk->number >= 1);
 
 	int ret = stk->data[stk->number - 1];
@@ -122,7 +127,8 @@ int MyPop(pStack stk)
 
 void MyClear(pStack stk)
 {
-	assert(stk);
+	if(!stk)
+		return;
 
 	for(int i=0; i<(int)stk->lenth - 1; ++i)
 	{
@@ -138,7 +144,8 @@ void MyClear(pStack stk)
 
 int MySize(pStack stk)
 {
-	assert(stk);
+	if(!stk)
+		return _NULL_POINTER_;
 
 	return stk->number;
 }
@@ -156,11 +163,11 @@ int MyEmpty(pStack stk)
 
 	if(stk->number == 0)
 	{
-		return 1;
+		return _YES_;
 	}
 	else
 	{
-		return 0;
+		return _NO_;
 	}
 }
 
@@ -170,11 +177,11 @@ int IsFully(pStack stk)
 
 	if(stk->number == stk->lenth - 1)
 	{
-		return 1;
+		return _YES_;
 	}
 	else
 	{
-		return 0;
+		return _NO_;
 	}
 }
 
